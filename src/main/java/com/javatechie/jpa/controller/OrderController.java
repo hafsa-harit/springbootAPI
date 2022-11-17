@@ -24,55 +24,58 @@ public class OrderController {
 
     @PostMapping("/placeOrder")
     public Profile placeOrder(@RequestBody OrderRequest request){
-       return profileRespository.save(request.getProfile());
+
+
+        return profileService.addProfile(request);
     }
 
-    @PostMapping("/addProduct")
-    public Profile placeOrder(@RequestParam Long customerId, @RequestBody User product){
-        //find the custumer
-        //add the product to the  list
 
-       return profileService.update(customerId, product);
+
+
+    @PostMapping("/addUser")
+    public Profile addUser(@RequestParam Long profileId, @RequestBody User user){
+
+
+       return profileService.addUserToProfile(profileId, user);
     }
+
+    @PostMapping("/updateProfile")
+    public void updateProfile(@RequestParam Long profileID, @RequestBody Profile profile)
+    {
+        profileService.updateProfile(profileID, profile);
+    }
+
 
     @GetMapping("/findAllProfiles")
     public List<Profile> findAllProfiles(){
-        return profileRespository.findAll();
+
+        return profileService.getAllProfiles();
     }
 
 
-    @GetMapping("/getInfo")
-    public List<OrderResponse> getJoinInformation(@RequestParam int id){
-        return profileRespository.getJoinInformation(id);
+
+
+    @GetMapping("/getProfileByUserId")
+    public List<OrderResponse> getProfileByUserId(@RequestParam int id){
+        return profileService.getProfileByUserId(id);
     }
+
+    @GetMapping("/deleteProfile")
+    public List<Profile> deleteProfile(@RequestParam Long profileID)
+    {
+        return profileService.deleteProfile(profileID);
+    }
+
+
+
+
+
     //to delete a product we need : first to have the product id, to use it to find the customer id which is
     //a foreign key to the customer table, and then search the current product in the list of products and delete it
     @Transactional
-    @GetMapping("/getCId")
-    public void getCId(@RequestParam int id){
-        List<OrderResponse> orderResponses = profileRespository.getJoinInformation(id);
-        if(orderResponses.size()==0)
-
-            throw new IllegalStateException("Product does not exist");
-
-        Optional<Profile> optionalCustomer=profileRespository.findById(orderResponses.get(0).getCid());
-        if(optionalCustomer==null)
-
-            throw new IllegalStateException("Product does not exist");
-
-        List<User> userList=optionalCustomer.get().getUsers();
-        if(userList.size()==0)
-
-            throw new IllegalStateException("List is empty");
-
-        int index=0;
-
-        for (User p: userList) {
-            if (p.getPid()==id)break;//userList.remove(index);
-            index++;
-
-        }
-        userList.remove(index);
+    @GetMapping("/deleteUser")
+    public void deleteUser(@RequestParam int id){
+        profileService.deleteUserFromProfile(id);
 
 //        return  orderResponses.get(0).getCid();
 //        OrderResponse orderResponse;
