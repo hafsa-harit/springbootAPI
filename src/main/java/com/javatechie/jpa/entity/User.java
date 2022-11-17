@@ -6,29 +6,25 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
 @Entity
-public class Customer {
+@Table(name = "users")
+public class User {
     @Id
     @SequenceGenerator(
-            name= "sequence",
-            sequenceName = "sequence",
+            name= "sequence2",
+            sequenceName = "sequence2",
             allocationSize = 1
     )
     @GeneratedValue (
             strategy = GenerationType.SEQUENCE,
-            generator = "sequence"
+            generator = "sequence2"
     )
-    private int id;
+    private int pid;
     private String name;
-    private String email;
-    private String gender;
-    @OneToMany(targetEntity = Product.class,cascade = CascadeType.ALL)
-    @JoinColumn(name ="cp_fk",referencedColumnName = "id")
-    private List<Product> products;
+
 }

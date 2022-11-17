@@ -1,6 +1,5 @@
 package com.javatechie.jpa.dto;
-
-import com.javatechie.jpa.entity.Customer;
+import com.javatechie.jpa.entity.Profile;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,5 +11,5 @@ import lombok.ToString;
 @ToString
 public class OrderRequest {
 
-    private Customer customer;
+    private Profile profile;
 }
